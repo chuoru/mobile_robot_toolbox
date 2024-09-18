@@ -1,1 +1,1 @@
-## Six Degrees Pneumatic Robot
+## Mobile Robot Toolbox for Matlab
