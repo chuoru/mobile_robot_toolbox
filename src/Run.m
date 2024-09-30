@@ -10,18 +10,18 @@ tSTART = 0;
 tMAX = 60;
 
 %% Set up model:
-% model = Mdl_DifferentialDriveCLASS();
-model = Mdl_TractorTrailerCLASS();
+model = Mdl_DifferentialDriveCLASS();
+% model = Mdl_TractorTrailerCLASS();
 % model = Mdl_BicycleCLASS();
 
 %% Initial state
 q0 = zeros(model.nx, 1);
-q0 = [0;0;0;-(model.length_front + model.length_back);0;0];
+q0 = [0;0;0];
 
 %% Set up trajectory:
-% trajectory = Ref_EightCurveCLASS(model);
-trajectory = Ref_CoveragePath2CLASS(model);
-% trajectory = Ref_HalfCircleCLASS(model);
+trajectory = Ref_EightCurveCLASS(model);
+% trajectory = Ref_CoveragePath2CLASS(model);
+% trajectory = Ref_CoveragePathCLASS(model);
 trajectory.tMAX   = tMAX;                      % maximum simulation time
 trajectory.dt = dt; 
 trajectory.mode = "normal";
@@ -35,7 +35,7 @@ controller = Ctrl_MPControlCLASS(model, trajectory);
 
 %% Set up observer; 
 observer = Obs_NormalCLASS(model, false);
-observer.noise_sigma = diag(ones(model.nx, 1))*1e-4;
+observer.noise_sigma = diag(ones(model.nx, 1))*1e-8;
 
 %% Set up simultion: 
 simulation = TimeSteppingCLASS(model, trajectory, controller, observer);
@@ -45,7 +45,7 @@ simulation.dt = dt;
 
 %% Run simulation
 simulation = simulation.Run(q0);
-
+% simulation = simulation.Save("slip-0.05");
 %% Set up animation:
 animation = AnimationCLASS(model, trajectory, controller, simulation);
 % animation = animation.Animate();

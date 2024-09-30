@@ -10,9 +10,9 @@ classdef Mdl_DifferentialDriveCLASS
         nu;
         
         % Parameters
-        slip_right = 0.0;
+        slip_right = 0.05;
 
-        slip_left = 0.0;
+        slip_left = 0.05;
 
         distance = 0.53/2; 
 

@@ -23,6 +23,8 @@ classdef TimeSteppingCLASS
         controller;
         trajectory;
         observer;
+        className;
+        folderPath;
     end
 
     methods
@@ -32,8 +34,24 @@ classdef TimeSteppingCLASS
             obj.controller = controller;
             obj.trajectory = trajectory;
             obj.observer   = observer;
+            obj.className  = class(obj);
+            [obj.folderPath] = fileparts(which(obj.className));
         end
         
+        function obj = Save(obj, file_name)
+            data = [obj.t_out', obj.x_out', obj.u_out'];
+
+            data = round(data, 6);
+
+            output = [num2cell(data)];
+            
+            fileName = append(file_name, '.csv');
+
+            filePath = append(obj.folderPath, '/', fileName);
+
+            writecell(output, filePath); % introduced in Matlab 2019a
+        end
+
         function obj = Run(obj, q0)
             obj.t_out    = linspace(obj.tSTART, obj.tMAX, (1/obj.dt) * obj.tMAX);
             nt           = size(obj.t_out,2);
